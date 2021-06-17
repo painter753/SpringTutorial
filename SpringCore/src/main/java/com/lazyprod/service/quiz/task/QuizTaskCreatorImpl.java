@@ -2,10 +2,12 @@ package com.lazyprod.service.quiz.task;
 
 import com.lazyprod.domain.quiz.QuizOption;
 import com.lazyprod.domain.quiz.QuizTask;
+import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
 import java.util.Collection;
 
+@Service
 public class QuizTaskCreatorImpl implements QuizTaskCreator {
 
     @Override

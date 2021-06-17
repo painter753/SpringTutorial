@@ -6,7 +6,11 @@ import com.lazyprod.domain.quiz.QuizResult;
 import com.lazyprod.domain.quiz.QuizTask;
 import com.lazyprod.domain.quiz.QuizTasksPack;
 import com.lazyprod.service.io.IOService;
+import org.springframework.stereotype.Service;
 
+import java.util.Locale;
+
+@Service
 public class QuizProcessorImpl implements QuizProcessor {
 
     private IOService ioService;
@@ -17,7 +21,7 @@ public class QuizProcessorImpl implements QuizProcessor {
 
     @Override
     public QuizResult startQuizForPerson(Person person, QuizTasksPack quizTasksPack) {
-        ioService.write("Okkkay. Here is your questions:");
+        ioService.writeLocalized("message.quiz.start-quiz", Locale.GERMANY);
         quizTasksPack.getQuizTasks();
 
         int totalRightAnswers = 0;
@@ -32,14 +36,14 @@ public class QuizProcessorImpl implements QuizProcessor {
                 ioService.write("\t" + optionCounter + ". " + option.toString() + "\n");
                 optionCounter++;
             }
-            ioService.write("Your answer:\n");
+            ioService.writeLocalized("message.quiz.answer.got", Locale.GERMANY);
             Integer answer = Integer.parseInt(ioService.read());
 
             if (answer.equals(rightOption)) {
-                ioService.write("Right!");
+                ioService.writeLocalized("message.quiz.answer.right", Locale.GERMANY);
                 totalRightAnswers++;
             } else {
-                ioService.write("Wrong!");
+                ioService.writeLocalized("message.quiz.answer.wrong", Locale.GERMANY);
             }
             questionCounter++;
 

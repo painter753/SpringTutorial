@@ -6,13 +6,29 @@ import com.lazyprod.domain.quiz.QuizResult;
 import com.lazyprod.service.io.IOService;
 import com.lazyprod.service.person.PersonService;
 import com.lazyprod.service.quiz.task.QuizTasksService;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.context.MessageSource;
+import org.springframework.stereotype.Service;
 
+import java.util.Locale;
+
+@Service
 public class QuizServiceImpl implements QuizService {
 
     private PersonService personService;
     private QuizTasksService quizTasksService;
     private QuizProcessor quizProcessor;
     private IOService ioService;
+    private MessageSource messageSource;
+
+    @Autowired
+    public QuizServiceImpl(PersonService personService, QuizTasksService quizTasksService, QuizProcessor quizProcessor, IOService ioService, MessageSource messageSource) {
+        this.personService = personService;
+        this.quizTasksService = quizTasksService;
+        this.quizProcessor = quizProcessor;
+        this.ioService = ioService;
+        this.messageSource = messageSource;
+    }
 
     public QuizServiceImpl(PersonService personService, QuizTasksService quizTasksService, QuizProcessor quizProcessor, IOService ioService) {
         this.personService = personService;
@@ -23,12 +39,11 @@ public class QuizServiceImpl implements QuizService {
 
     @Override
     public QuizResult startQuiz() {
-        ioService.write("Welcome to magic quiz.");
+        ioService.writeLocalized("message.quiz.welcome", Locale.GERMANY);
         Person person = personService.welcomePerson();
         QuizTasksPack quizTasksPack = quizTasksService.getQuizPack();
         QuizResult quizResult = quizProcessor.startQuizForPerson(person, quizTasksPack);
-
-        ioService.write("Your score, " + person + ": " + quizResult.getRightAnswersCounter());
+        ioService.writeLocalized("message.quiz.result", Locale.GERMANY, person, quizResult.getRightAnswersCounter());
 
         return quizResult;
     }

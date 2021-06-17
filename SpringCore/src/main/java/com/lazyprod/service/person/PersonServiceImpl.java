@@ -3,7 +3,13 @@ package com.lazyprod.service.person;
 import com.lazyprod.dao.person.PersonDao;
 import com.lazyprod.domain.person.Person;
 import com.lazyprod.service.io.IOService;
+import org.springframework.stereotype.Component;
+import org.springframework.stereotype.Service;
+import org.springframework.validation.ObjectError;
 
+import java.util.Locale;
+
+@Service
 public class PersonServiceImpl implements PersonService {
 
     private PersonDao personDao;
@@ -15,11 +21,11 @@ public class PersonServiceImpl implements PersonService {
     }
 
     public Person welcomePerson() {
-        ioService.write("Welcome! Enter your credentials.\n");
-        ioService.write("Enter your first name:\n");
+        ioService.writeLocalized("message.person.welcome", Locale.GERMANY);
+        ioService.writeLocalized("message.person.first-name", Locale.GERMANY);
 
         String firstName = ioService.read();
-        ioService.write("Enter your last name:\n");
+        ioService.writeLocalized("message.person.last-name", Locale.GERMANY);
         String lastName = ioService.read();
 
         return this.personDao.getPerson(firstName, lastName);
