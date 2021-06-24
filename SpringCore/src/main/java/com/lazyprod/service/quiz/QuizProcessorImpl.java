@@ -8,8 +8,6 @@ import com.lazyprod.domain.quiz.QuizTasksPack;
 import com.lazyprod.service.io.IOService;
 import org.springframework.stereotype.Service;
 
-import java.util.Locale;
-
 @Service
 public class QuizProcessorImpl implements QuizProcessor {
 
@@ -21,29 +19,38 @@ public class QuizProcessorImpl implements QuizProcessor {
 
     @Override
     public QuizResult startQuizForPerson(Person person, QuizTasksPack quizTasksPack) {
-        ioService.writeLocalized("message.quiz.start-quiz", Locale.GERMANY);
+        ioService.writeLocalizedMessage("message.quiz.start-quiz");
         quizTasksPack.getQuizTasks();
 
         int totalRightAnswers = 0;
         int questionCounter = 1;
 
         for (QuizTask quizTask : quizTasksPack.getQuizTasks()) {
-            ioService.write(questionCounter + ". " + quizTask.getQuestion() + "\n");
+            ioService.writeMessage(questionCounter + ". " + quizTask.getQuestion() + "\n");
             int optionCounter = 1;
             int rightOption = 0;
             for (QuizOption option : quizTask.getOptions()) {
                 if (option.isCorrectAnswer()) rightOption = optionCounter;
-                ioService.write("\t" + optionCounter + ". " + option.toString() + "\n");
+                ioService.writeMessage("\t" + optionCounter + ". " + option.toString() + "\n");
                 optionCounter++;
             }
-            ioService.writeLocalized("message.quiz.answer.got", Locale.GERMANY);
-            Integer answer = Integer.parseInt(ioService.read());
+            ioService.writeLocalizedMessage("message.quiz.answer.got");
+            String answerStr = null;
+            Integer answer = null;
+            while ((answerStr = ioService.read()) != null ) {
+                try {
+                    answer = Integer.parseInt(answerStr);
+                    break;
+                } catch (Exception e) {
+                    ioService.writeLocalizedMessage("message.quiz.answer.warning");
+                }
+            }
 
             if (answer.equals(rightOption)) {
-                ioService.writeLocalized("message.quiz.answer.right", Locale.GERMANY);
+                ioService.writeLocalizedMessage("message.quiz.answer.right");
                 totalRightAnswers++;
             } else {
-                ioService.writeLocalized("message.quiz.answer.wrong", Locale.GERMANY);
+                ioService.writeLocalizedMessage("message.quiz.answer.wrong");
             }
             questionCounter++;
 

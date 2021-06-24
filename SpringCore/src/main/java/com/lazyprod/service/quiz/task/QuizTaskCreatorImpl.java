@@ -17,12 +17,12 @@ public class QuizTaskCreatorImpl implements QuizTaskCreator {
         int id = Integer.parseInt(columns[0].trim());
         String question = columns[1];
 
-        int rightAnswer = Integer.parseInt(columns[columns.length - 1].trim());
+        int rightAnswer = Integer.parseInt(columns[2].trim());
 
         Collection<QuizOption> options = new ArrayList<>();
-        for (int i = 2; i < columns.length - 1; i++) {
+        for (int i = 3; i < columns.length; i++) {
             boolean isCorrect = false;
-            if (rightAnswer == i - 1) {
+            if (rightAnswer == i - 2) {
                 isCorrect = true;
             }
 

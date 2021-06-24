@@ -1,6 +1,7 @@
 package com.lazyprod.service.io;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.context.MessageSource;
 import org.springframework.stereotype.Service;
 
@@ -16,24 +17,26 @@ public class IOServiceImpl implements IOService {
     private PrintWriter writer;
     private BufferedReader reader;
     private MessageSource messageSource;
+    private Locale locale;
 
     @Autowired
-    public IOServiceImpl(MessageSource messageSource) {
+    public IOServiceImpl(MessageSource messageSource, @Qualifier("locale") Locale locale) {
         this.messageSource = messageSource;
+        this.locale = locale;
         //todo change to DI
         this.writer = new PrintWriter(System.out);
         this.reader = new BufferedReader(new InputStreamReader(System.in));
     }
 
     @Override
-    public void write(String message) {
+    public void writeMessage(String message) {
         writer.write(message);
         writer.flush();
     }
 
     @Override
-    public void writeLocalized(String message, Locale locale, Object... args) {
-        String finalMessage = messageSource.getMessage(message, args, locale);
+    public void writeLocalizedMessage(String message, Object... args) {
+        String finalMessage = messageSource.getMessage(message, args, this.locale);
         writer.write(finalMessage);
         writer.flush();
     }

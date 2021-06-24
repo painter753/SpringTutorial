@@ -10,8 +10,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.MessageSource;
 import org.springframework.stereotype.Service;
 
-import java.util.Locale;
-
 @Service
 public class QuizServiceImpl implements QuizService {
 
@@ -39,11 +37,11 @@ public class QuizServiceImpl implements QuizService {
 
     @Override
     public QuizResult startQuiz() {
-        ioService.writeLocalized("message.quiz.welcome", Locale.GERMANY);
+        ioService.writeLocalizedMessage("message.quiz.welcome");
         Person person = personService.welcomePerson();
         QuizTasksPack quizTasksPack = quizTasksService.getQuizPack();
         QuizResult quizResult = quizProcessor.startQuizForPerson(person, quizTasksPack);
-        ioService.writeLocalized("message.quiz.result", Locale.GERMANY, person, quizResult.getRightAnswersCounter());
+        ioService.writeLocalizedMessage("message.quiz.result", person, quizResult.getRightAnswersCounter());
 
         return quizResult;
     }

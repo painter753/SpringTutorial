@@ -31,7 +31,7 @@ public class QuizTaskCreatorImplTest {
         String option2 = "op2";
         String answer = "2";
 
-        String taskRow = Stream.of(qid, question, option1, option2, answer).collect(Collectors.joining(","));
+        String taskRow = Stream.of(qid, question, answer, option1, option2).collect(Collectors.joining(","));
 
         QuizTask task = quizTaskCreator.createTask(taskRow);
 
