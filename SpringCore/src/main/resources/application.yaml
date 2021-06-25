@@ -1,0 +1,8 @@
+com:
+  lazyprod:
+    quiz:
+      tasks:
+        source:
+          file:
+            pattern: quiz/tasks
+            extension: .csv
