@@ -7,6 +7,8 @@ import org.springframework.boot.context.properties.ConfigurationProperties;
 import org.springframework.stereotype.Component;
 import org.springframework.validation.annotation.Validated;
 
+import javax.validation.constraints.NotNull;
+
 @ConfigurationProperties("com.lazyprod")
 @Getter
 @Setter
@@ -43,7 +45,9 @@ public final class ApplicationProperties {
                 @ToString
                 public final class File {
 
+                    @NotNull
                     private String pattern;
+                    @NotNull
                     private String extension;
 
                 }
